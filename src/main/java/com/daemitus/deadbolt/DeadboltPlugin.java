@@ -27,9 +27,6 @@ public class DeadboltPlugin extends JavaPlugin implements Listener {
         new PlayerListener();
         new SignListener();
 
-        if (Deadbolt.getConfig().deny_endermen) {
-            new EndermanListener();
-        }
         if (Deadbolt.getConfig().deny_explosions) {
             new ExplosionListener();
         }
@@ -62,7 +59,7 @@ public class DeadboltPlugin extends JavaPlugin implements Listener {
     }
 
     public void bootStrap() {
-        configStorage = new FileYamlStorage<Config>(new File(getDataFolder(), "config.yml"), Config.class, this);
+        configStorage = new FileYamlStorage<>(new File(getDataFolder(), "config.yml"), Config.class, this);
         c = configStorage.load();
         configStorage.save();
 
@@ -71,7 +68,7 @@ public class DeadboltPlugin extends JavaPlugin implements Listener {
             Deadbolt.getLogger().warning(langFile.getName() + " not found, copying default english.yml");
             langFile = new File(getDataFolder(), "english.yml");
         }
-        languageStorage = new FileYamlStorage<Language>(langFile, Language.class, this);
+        languageStorage = new FileYamlStorage<>(langFile, Language.class, this);
         l = languageStorage.load();
         languageStorage.save();
 

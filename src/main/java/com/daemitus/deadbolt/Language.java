@@ -27,11 +27,7 @@ public class Language extends AnnotatedConfig {
     public String signtext_timer = "timer";
     public String cmd_help_editsign = "/deadbolt <line number> <text> - Edit signs on locked containers, right click a sign first to select it";
     public String cmd_help_reload = "/deadbolt reload - Reload the config.yml and <language>.yml files";
-    public String cmd_help_fix = "/deadbolt fix - toggle a single block";
-    public String cmd_help_fixAll = "/deadbolt fixall - toggle all related blocks";
     public String cmd_reload = "Reloading settings...";
-    public String cmd_fix_notowned = "You don't own that block";
-    public String cmd_fix_bad_type = "You can only fix blocks that open and close";
     public String cmd_sign_updated = "Sign updated";
     public String cmd_sign_selected = "Sign selected, use /deadbolt <line number> <text>";
     public String cmd_sign_selected_error = "Selected sign has an error. Right click it again";
@@ -47,7 +43,6 @@ public class Language extends AnnotatedConfig {
     public String msg_admin_bypass = "(Admin) Warning, this door is owned by %1$s, make sure to shut it";
     public String msg_admin_sign_placed = "(Admin) Warning, this block is owned by %1$s";
     public String msg_admin_sign_selection = "(Admin) Warning, selected a sign owned by %1$s";
-    public String msg_admin_block_fixed = "(Admin) Warning, fixed a block owned by %1$s";
     public String msg_admin_container = "(Admin) %1$s opened a container owned by %2$s";
     public String msg_admin_warning_player_not_found = "%1$s is not online, make sure you have the correct name";
     public String msg_deny_access_door = "Access denied";
@@ -64,7 +59,6 @@ public class Language extends AnnotatedConfig {
     public String msg_deny_sign_moreusers_no_private = "No sign with [Private] nearby";
     public String msg_deny_sign_quickplace = "You cant protect this block, %1$s already has";
     public String msg_deny_block_perm = "You do not have permission to protect this type of block";
-    public String msg_reminder_lock_your_chests = "Place a sign headed [Private] next to your block to lock it";
     public String msg_auto_expire_owner_x_days = "Expires if %1$s is offline %2$s more days";
     public String msg_auto_expire_expired = "This protection has expired";
     public String msg_hopper = "You cannot place hoppers under this block as you do not own it!";

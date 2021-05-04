@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.plugin.Plugin;
 
 public class PlayerNameUtil implements Listener {
@@ -36,13 +36,13 @@ public class PlayerNameUtil implements Listener {
      * This map is populated using the player.dat files on disk.
      * It is also populated when a player tries to log in to the server.
      */
-    protected static Map<String, String> nameToCorrectName = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+    protected static Map<String, String> nameToCorrectName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     
     /**
      * This map is used to improve the speed of name start lookups.
      * Note that the keys in this map is lowercase.
      */
-    protected static Map<String, Set<String>> lowerCaseStartOfNameToCorrectNames = new TreeMap<String, Set<String>>();
+    protected static Map<String, Set<String>> lowerCaseStartOfNameToCorrectNames = new TreeMap<>();
     
     /**
      * Did we populate the map yet?
@@ -63,7 +63,7 @@ public class PlayerNameUtil implements Listener {
     }
     
     @EventHandler(priority = EventPriority.LOWEST)
-    public synchronized void onLowestPlayerPreLoginEvent(PlayerPreLoginEvent event)
+    public void onLowestAsyncPlayerPreLoginEvent(AsyncPlayerPreLoginEvent event)
     {
         String newPlayerName = event.getName();
         String lowercaseNewPlayerName = newPlayerName.toLowerCase();
@@ -104,7 +104,7 @@ public class PlayerNameUtil implements Listener {
      * This method will return the names of offline players as well as online players.
      */
     public synchronized static Set<String> getAllPlayerNamesCaseinsensitivelyStartingWith(final String startOfName) {
-        Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+        Set<String> ret = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         
         String lowercaseStartOfName = startOfName.toLowerCase();
         
@@ -117,7 +117,7 @@ public class PlayerNameUtil implements Listener {
         
         // Build it the hard way if cache did not exist
         
-        ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+        ret = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         for (String correctName : nameToCorrectName.values()) {
             if (correctName.toLowerCase().startsWith(lowercaseStartOfName)) {
                 ret.add(correctName);
@@ -125,7 +125,7 @@ public class PlayerNameUtil implements Listener {
         }
         
         // Add it to the cache
-        Set<String> shallowCopyForCache = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+        Set<String> shallowCopyForCache = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         shallowCopyForCache.addAll(ret);
         lowerCaseStartOfNameToCorrectNames.put(lowercaseStartOfName, shallowCopyForCache);
         
@@ -138,7 +138,7 @@ public class PlayerNameUtil implements Listener {
      * This method finds all possible matching player names.
      */
     public static Set<String> interpretPlayerNameFromSign(String playerNameFromSign) {
-        Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+        Set<String> ret = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         
         if (playerNameFromSign.length() > 15) {
             // This case will in reality not happen.

@@ -20,7 +20,7 @@ public class RedstoneListener implements Listener {
     @EventHandler
     public void onBlockRedstoneChange(BlockRedstoneEvent event) {
         Block block = event.getBlock();
-        if (Deadbolt.getConfig().redstone_protected_blockids.contains(block.getTypeId())) {
+        if (Deadbolt.getConfig().redstone_protected_blockids.contains(block.getType().name())) {
             Deadbolted db = Deadbolt.get(block);
             if (db.isProtected() && !db.isEveryone()) {
                 event.setNewCurrent(event.getOldCurrent());

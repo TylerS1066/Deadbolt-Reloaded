@@ -3,7 +3,6 @@ package com.daemitus.deadbolt.events;
 import com.daemitus.deadbolt.Deadbolt;
 import com.daemitus.deadbolt.Deadbolted;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,10 +33,7 @@ public class PistonListener implements Listener {
         Block block = extension.getRelative(event.getDirection());
         Deadbolted db = Deadbolt.get(block);
         if (db.isProtected()) {
-            // TODO why cant we just cancel
             event.setCancelled(true);
-            piston.setData((byte) (piston.getData() ^ 0x8));
-            extension.setType(Material.AIR);
         }
     }
 }

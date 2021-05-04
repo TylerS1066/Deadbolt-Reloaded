@@ -25,7 +25,7 @@ public class Config extends AnnotatedConfig {
     public int auto_expire_days = 0;
     @ConfigComment("Allows trapdoors to link with each other vertically")
     public boolean vertical_trapdoors = true;
-    @ConfigComment("Allows furnaces to act like chests, one sign for all connected blocks")
+    @ConfigComment("Allows furnaces to act like chests, one sign for all connected blocks. Includes smokers and blast furnaces.")
     public boolean group_furnaces = true;
     @ConfigComment("Allows dispensers to act like chests, one sign for all connected blocks")
     public boolean group_dispensers = true;
@@ -35,16 +35,21 @@ public class Config extends AnnotatedConfig {
     public boolean group_enchantment_tables = true;
     @ConfigComment("Allows brewing stands to act like chests, one sign for all connected blocks")
     public boolean group_brewing_stands = true;
+    @ConfigComment("Allows barrels to act like chests, one sign for all connected blocks")
+    public boolean group_barrels = true;
     @ConfigComment("Allows right click placement of signs automatically on the target")
     public boolean deny_quick_signs = false;
+    @ConfigComment("List of blockIDs that can be quick sign protected")
+    public List<String> quick_signs_blockids = Arrays.asList(
+            Material.CHEST.name(),
+            Material.TRAPPED_CHEST.name()
+    );
     @ConfigComment("Clear sign selection after using /deadbolt <line> <text>")
     public boolean clear_sign_selection = false;
     @ConfigComment("Denies things such as snowmen opening doors")
     public boolean deny_entity_interact = true;
     @ConfigComment("Denies explosions from breaking protected blocks")
     public boolean deny_explosions = true;
-    @ConfigComment("Denies endermen from breaking protected blocks")
-    public boolean deny_endermen = true;
     @ConfigComment("Denies pistons from breaking protected blocks")
     public boolean deny_pistons = true;
     @ConfigComment("Denies redstone from toggling protected blocks")
@@ -52,18 +57,23 @@ public class Config extends AnnotatedConfig {
     @ConfigComment("Denies Hopper Minecart from interacting with protected blocks")
     public boolean deny_hoppercart = true;
     @ConfigComment("List of blockIDs protected by redstone unless overrode by [everyone]")
-    public List<Integer> redstone_protected_blockids = Arrays.asList(
+    public List<String> redstone_protected_blockids = Arrays.asList(
             // Doors
-            Material.WOODEN_DOOR.getId(),
-            Material.IRON_DOOR_BLOCK.getId(),
-            Material.SPRUCE_DOOR.getId(),
-            Material.BIRCH_DOOR.getId(),
-            Material.JUNGLE_DOOR.getId(),
-            Material.ACACIA_DOOR.getId(),
-            Material.DARK_OAK_DOOR.getId(),
+            Material.OAK_DOOR.name(),
+            Material.IRON_DOOR.name(),
+            Material.SPRUCE_DOOR.name(),
+            Material.BIRCH_DOOR.name(),
+            Material.JUNGLE_DOOR.name(),
+            Material.ACACIA_DOOR.name(),
+            Material.DARK_OAK_DOOR.name(),
             // trap doors
-            Material.TRAP_DOOR.getId(),
-            Material.IRON_TRAPDOOR.getId()
+            Material.OAK_TRAPDOOR.name(),
+            Material.SPRUCE_TRAPDOOR.name(),
+            Material.BIRCH_TRAPDOOR.name(),
+            Material.JUNGLE_TRAPDOOR.name(),
+            Material.ACACIA_TRAPDOOR.name(),
+            Material.DARK_OAK_TRAPDOOR.name(),
+            Material.IRON_TRAPDOOR.name()
     );
     @ConfigComment("Denies function of the [timer: x] tag on signs")
     public boolean deny_timed_doors = false;
@@ -93,8 +103,7 @@ public class Config extends AnnotatedConfig {
     //------------------------------------------------------------------------//
     private final transient String TAG = "Deadbolt: ";
     //------------------------------------------------------------------------//
-    public transient Set<Player> reminder = new HashSet<Player>();
-    public transient Map<Player, Block> selectedSign = new HashMap<Player, Block>();
+    public transient Map<Player, Block> selectedSign = new HashMap<>();
     //------------------------------------------------------------------------//
     public final transient Set<BlockFace> CARDINAL_FACES = EnumSet.of(BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST);
     public final transient Set<BlockFace> VERTICAL_FACES = EnumSet.of(BlockFace.UP, BlockFace.DOWN);

@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,7 +48,7 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         Block against = event.getBlockAgainst();
 
-        if (against.getType().equals(Material.WALL_SIGN) && Deadbolt.getLanguage().isValidWallSign((Sign) against.getState())) {
+        if (against.getBlockData() instanceof WallSign && Deadbolt.getLanguage().isValidWallSign((Sign) against.getState())) {
             event.setCancelled(true);
             return;
         }
@@ -61,37 +62,33 @@ public class BlockListener implements Listener {
         }
         Deadbolted db = Deadbolt.get(block);
         switch (block.getType()) {
+            case BARREL:
             case CHEST:
             case FURNACE:
+            case BLAST_FURNACE:
+            case SMOKER:
             case CAULDRON:
             case DISPENSER:
             case BREWING_STAND:
-            case BURNING_FURNACE:
-            case ENCHANTMENT_TABLE:
+            case ENCHANTING_TABLE:
             case ANVIL:
             case ENDER_CHEST:
             case BEACON:
             case DROPPER:
             case TRAPPED_CHEST:
             case HOPPER:
-                if (player.hasPermission(getPermission(block.getType())) && Deadbolt.getConfig().reminder.add(player)) {
-                    Deadbolt.getConfig().sendMessage(player, ChatColor.GOLD, Deadbolt.getLanguage().msg_reminder_lock_your_chests);
-                }
                 if (db.isProtected() && !db.isOwner(player)) {
                     event.setCancelled(true);
                     Deadbolt.getConfig().sendMessage(player, ChatColor.RED, Deadbolt.getLanguage().msg_deny_container_expansion);
                 }
                 return;
-            case IRON_DOOR_BLOCK:
-            case WOODEN_DOOR:
+            case IRON_DOOR:
+            case OAK_DOOR:
             case SPRUCE_DOOR:
             case BIRCH_DOOR:
             case JUNGLE_DOOR:
             case ACACIA_DOOR:
             case DARK_OAK_DOOR:
-                if (player.hasPermission(getPermission(block.getType())) && Deadbolt.getConfig().reminder.add(player)) {
-                    Deadbolt.getConfig().sendMessage(player, ChatColor.GOLD, Deadbolt.getLanguage().msg_reminder_lock_your_chests);
-                }
                 if (db.isProtected() && !db.isOwner(player)) {
                     Deadbolt.getConfig().sendMessage(player, ChatColor.RED, Deadbolt.getLanguage().msg_deny_door_expansion);
                     Block upBlock = block.getRelative(BlockFace.UP);
@@ -102,25 +99,24 @@ public class BlockListener implements Listener {
                     event.setCancelled(true);
                 }
                 return;
-            case TRAP_DOOR:
+            case OAK_TRAPDOOR:
+            case SPRUCE_TRAPDOOR:
+            case BIRCH_TRAPDOOR:
+            case JUNGLE_TRAPDOOR:
+            case ACACIA_TRAPDOOR:
+            case DARK_OAK_TRAPDOOR:
             case IRON_TRAPDOOR:
-                if (player.hasPermission(getPermission(block.getType())) && Deadbolt.getConfig().reminder.add(player)) {
-                    Deadbolt.getConfig().sendMessage(player, ChatColor.GOLD, Deadbolt.getLanguage().msg_reminder_lock_your_chests);
-                }
                 if (db.isProtected() && !db.isOwner(player)) {
                     Deadbolt.getConfig().sendMessage(player, ChatColor.RED, Deadbolt.getLanguage().msg_deny_trapdoor_expansion);
                     event.setCancelled(true);
                 }
                 return;
-            case FENCE_GATE:
+            case OAK_FENCE_GATE:
             case BIRCH_FENCE_GATE:
             case ACACIA_FENCE_GATE:
             case DARK_OAK_FENCE_GATE:
             case JUNGLE_FENCE_GATE:
             case SPRUCE_FENCE_GATE:
-                if (player.hasPermission(getPermission(block.getType())) && Deadbolt.getConfig().reminder.add(player)) {
-                    Deadbolt.getConfig().sendMessage(player, ChatColor.GOLD, Deadbolt.getLanguage().msg_reminder_lock_your_chests);
-                }
                 if (db.isProtected() && !db.isOwner(player)) {
                     Deadbolt.getConfig().sendMessage(player, ChatColor.RED, Deadbolt.getLanguage().msg_deny_fencegate_expansion);
                     event.setCancelled(true);
@@ -140,10 +136,13 @@ public class BlockListener implements Listener {
 
     private String getPermission(Material type) {
         switch (type) {
+            case BARREL:
+                return Perm.user_create_barrel;
             case CHEST:
                 return Perm.user_create_chest;
             case FURNACE:
-            case BURNING_FURNACE:
+            case BLAST_FURNACE:
+            case SMOKER:
                 return Perm.user_create_furnace;
             case CAULDRON:
                 return Perm.user_create_cauldron;
@@ -151,20 +150,25 @@ public class BlockListener implements Listener {
                 return Perm.user_create_dispenser;
             case BREWING_STAND:
                 return Perm.user_create_brewery;
-            case ENCHANTMENT_TABLE:
+            case ENCHANTING_TABLE:
                 return Perm.user_create_enchant;
-            case WOODEN_DOOR:
-            case IRON_DOOR_BLOCK:
+            case OAK_DOOR:
+            case IRON_DOOR:
             case SPRUCE_DOOR:
             case BIRCH_DOOR:
             case JUNGLE_DOOR:
             case ACACIA_DOOR:
             case DARK_OAK_DOOR:
                 return Perm.user_create_door;
-            case TRAP_DOOR:
+            case OAK_TRAPDOOR:
+            case SPRUCE_TRAPDOOR:
+            case BIRCH_TRAPDOOR:
+            case JUNGLE_TRAPDOOR:
+            case ACACIA_TRAPDOOR:
+            case DARK_OAK_TRAPDOOR:
             case IRON_TRAPDOOR:
                 return Perm.user_create_trapdoor;
-            case FENCE_GATE:
+            case OAK_FENCE_GATE:
             case BIRCH_FENCE_GATE:
             case ACACIA_FENCE_GATE:
             case DARK_OAK_FENCE_GATE:
